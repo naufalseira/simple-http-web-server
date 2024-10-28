@@ -68,7 +68,6 @@ func main(){
 	fileServer := http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets")))
 	r.PathPrefix("/assets/").Handler(fileServer)
 
-	// Home handler untuk root endpoint (/)
 	r.HandleFunc("/", middleware(http.MethodGet, homeHandler))
 	r.HandleFunc("/contact", middleware(http.MethodPost, contactHandler))
 	r.HandleFunc("/jakarta", middleware(http.MethodGet, jakartaHandler))
