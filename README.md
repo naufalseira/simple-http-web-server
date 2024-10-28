@@ -13,14 +13,14 @@ A simple web application built with Go, using the Gorilla Mux framework to creat
 - **Form Handling**:
   - `/contact`: Accepts POST requests to process submitted form data.
 - **Middleware**:
-  - **Logging Middleware**: Logs the HTTP method, accessed URL and processing time.
+  - **Logging Middleware**: Logs request details like the HTTP method, accessed URL and processing time.
   - **HTTP Method Middleware**: Validates allowed HTTP methods for each endpoint.
 
 ## Requirements
 
 - **Go 1.22.0**: Ensure Go is installed on your system.
 
-## Installation
+## How to Use
 
 1. Clone this repository:
   ```bash
@@ -38,11 +38,26 @@ A simple web application built with Go, using the Gorilla Mux framework to creat
 ```bash
   go run main.go
   ```
-5. The server will run at http://localhost:8090. Available endpoints:
-- http://localhost:8090/
-- http://localhost:8090/#contact
-- http://localhost:8090/jakarta
-- http://localhost:8090/destination/{place}
+5. The server will run at:
+```bash
+  http://localhost:8090
+  ```
+
+## Running with Docker
+
+To run this project using Docker, you can pull the Docker image from Docker Hub and start a container.
+1. Pull the Docker Image:
+```bash
+  docker pull 0xsera/simple-http-web-server
+  ```
+2. Start a container from the image:
+```bash
+  docker run -p 8090:8090 0xsera/simple-http-web-server
+  ```
+3. With the container running, you can access the application in your browser at:
+```bash
+  http://localhost:8090
+  ```
 
 ## Usage Examples
 - http://localhost:8090/ : Displays the main page.
