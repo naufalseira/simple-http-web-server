@@ -33,6 +33,21 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./assets/index.html")
 }
 
+// Handler untuk (/contact) endpoint
+func contactHandler(w http.ResponseWriter, r * http.Request){
+	if err := r.ParseForm(); err != nil {
+		fmt.Fprintf(w,"ParseForm() err: %v", err)
+		return
+	}
+	fmt.Fprint(w, "POST request succesfull\n")
+	name := r.FormValue("name")
+	email := r.FormValue("email")
+	message := r.FormValue("message")
+	fmt.Fprintf(w, "Name = %s\n", name)
+	fmt.Fprintf(w, "Email = %s\n", email)
+	fmt.Fprintf(w, "Message = %s\n", message)
+}
+
 // Handler untuk (/jakarta) static endpoint
 func jakartaHandler(w http.ResponseWriter, r * http.Request) {
 	fmt.Fprintf(w, "Welcome to the jakarta page!")
@@ -41,8 +56,8 @@ func jakartaHandler(w http.ResponseWriter, r * http.Request) {
 // Handler untuk (/destination/{name}) dynamic endpoint 
 func destinationHandler(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
-    name := vars["name"]
-    fmt.Fprintf(w, "Welcome to the %s page!", name)
+    place := vars["place"]
+    fmt.Fprintf(w, "Welcome to the %s page!", place)
 }
 
 func main(){
@@ -55,7 +70,7 @@ func main(){
 
 	// Home handler untuk root endpoint (/)
 	r.HandleFunc("/", homeHandler)
-
+	r.HandleFunc("/contact", middleware(http.MethodPost, contactHandler))
 	r.HandleFunc("/jakarta", middleware(http.MethodGet, jakartaHandler))
 	r.HandleFunc("/destination/{name}", middleware(http.MethodGet, destinationHandler))
 
@@ -63,8 +78,9 @@ func main(){
 	fmt.Println("|      Server running on http://localhost:8090       |")
 	fmt.Println("------------------------------------------------------")
 	fmt.Println("Endpoint 1 -> http://localhost:8090/")
-	fmt.Println("Endpoint 1 -> http://localhost:8090/jakarta")
-	fmt.Println("Endpoint 2 -> http://localhost:8090/destination/{name}")
+	fmt.Println("Endpoint 2 -> http://localhost:8090/contact")
+	fmt.Println("Endpoint 3 -> http://localhost:8090/jakarta")
+	fmt.Println("Endpoint 4 -> http://localhost:8090/destination/{name}")
 	fmt.Println("------------------------------------------------------")
 	fmt.Println("> Log request")
 	fmt.Print("")
