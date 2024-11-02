@@ -1,5 +1,3 @@
-# kubectl -n pnt apply -f deployment.yaml
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -7,7 +5,6 @@ metadata:
   labels:
     app: simple-http-web-server
 spec:
-  # comment if using HPA
   replicas: 3 # number of pods to run
 
   # !IMPORTANT! labels selector for Service
@@ -27,124 +24,19 @@ spec:
       labels:
         app: simple-http-web-server
     spec:
-      # affinity:
-      #   nodeAffinity:
-      #     # required, hard requirement during scheduling
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #       nodeSelectorTerms:
-      #       - matchExpressions:
-      #         - key: operation
-      #           operator: In
-      #           values:
-      #           - pnt-alt-pool
-
-      #     # soft requirement during scheduling
-      #     prefferedDuringSchedulingIgnoredDuringExecution:
-      #       - weight: 1 # the higher, the more preferred
-      #         preference:
-      #           matchExpressions:
-      #           - key: operation
-      #             operator: In
-      #             values:
-      #             - pnt-alt-pool
-
-      #   podAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #     # pod with label confidential=high should be schedule on node with label security-zone
-      #     - labelSelector:
-      #         matchLabels:
-      #           confidential: high # pod should have label confidential: high
-      #       topologyKey: security-zone # node should have label security-zone
-
-      #   podAntiAffinity:
-      #     preferredDuringSchedulingIgnoredDuringExecution:
-      #     # Pod should not (but could) be placed on any node where a Pod with the label confidential=none is running.
-      #     - weight: 100
-      #       podAffinityTerm:
-      #         labelSelector:
-      #           matchLabels:
-      #             confidential: none
-      #         topologyKey: kubernetes.io/hostname
-
-      # using taint & toleration
-      # tolerations:
-      # prevent pod from being scheduled on master node
-      # - key: "node-role.kubernetes.io/master"
-      #   operation: "Exists"
-      #   effect: "NoSchedule"
-
-      # tolerations:
-      #   - key: operation-taints
-      #     operator: Equal
-      #     value: alt-taints
-      #     effect: NoSchedule
-      # nodeSelector:
-      #   operation: alt
-
-      # ```
-      # apiVersion: v1
-      # kind: Node
-      # metadata:
-      #   name: control-plane-node
-      # spec:
-      #   taints:
-      #   - effect: NoSchedule
-      #     key: node-role.kubernetes.io/control-plane
-      #     value: "true"
-      # ```
-      # - key: "node-role.kubernetes.io/control-plane"
-      #   operation: "Exists"
-      #   effect: "NoSchedule"
-
-      # - key: "node.kubernetes.io/unreachable"
-      #   effect: "NoExecute"
-      #   operator: "Exists"
-      # - key: "node.kubernetes.io/not-ready"
-      #   effect: "NoExecute"
-      #   operator: "Exists"
-      # initContainers:
-      #   - name: init-curl
-      #     image: curlimages/curl
-      #     imagePullPolicy: Always
-      #     command:
-      #     - curl
-      #     - -v
-      #     - http://localhost
-
-      # set service account. By default k8s will assign `default` sa to every pods
-      # secret will be mounted on /var/run/secrets/kubernetes.io/serviceaccount
-      # serviceAccountName: onxp-exercise-sa
-
-      # define where to deploy
-      # nodeSelector:
-      # operation: pnt-alt-pool
-
       containers:
         - name: simple-http-web-server
           image: 0xsera/simple-http-web-server:v0.0
-          imagePullPolicy: Always # or IfNotPresent
-
-          # resources profile
-          # Types of Quality of Service (QoS):
-          # - Guaranteed: highest priority, guaranteed not to be killed. Set equal amount of resource requests and limits
-          # - Burstable: killed when resource is on upper limit. Set different resource requests and limits
-          # - BestEffort: lowest priority, killed first. do not have any resource requests or limits.
+          imagePullPolicy: Always
           resources:
             requests:
               memory: 300Mi
               cpu: 300m
-            #     # ephemeral-storage: 2Gi # request for pod's storage
-            #     # hugepages-2Mi: 100Mi # hugepage enable k8s to manage memory in large chuks
-
             limits:
               memory: 310Mi
               cpu: 310m
-
           # health-check
-
           # readinessProbe: check if container is ready to serve traffic
-          # biasanya endpoint yang digunakan adalah /health
-          # { "success": "ok"}
           readinessProbe:
             httpGet:
               path: /
@@ -164,12 +56,3 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 30
             timeoutSeconds: 1
-
-          # Check container is already started. Ideal to start app with long startup time.
-          # executed before readinessProbe
-          # startupProbe:
-          #   exec:
-          #   command: [ "curl", "http://localhost" ]
-          #   initialDelaySeconds: 60
-          #   periodSeconds: 60
-          #   failureThreshold: 15
