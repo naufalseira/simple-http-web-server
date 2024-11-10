@@ -1,0 +1,23 @@
+# Chart.yaml
+apiVersion: v2
+name: simple-http-web-server
+description: A Helm chart for Simple HTTP Web Server Kubernetes deployment
+type: application
+version: 0.1.0
+appVersion: "v0.0"
+
+# Keywords that describe your application
+keywords:
+  - web
+  - http
+  - server
+
+# Source code repository
+sources:
+  - https://github.com/naufalseira/simple-http-web-server
+
+# Maintainer information
+maintainers:
+  - name: Naufal Seira
+    email: naufal.farras@binus.ac.id
+    url: https://github.com/naufalseira

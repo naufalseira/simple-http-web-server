@@ -1,0 +1,25 @@
+Thank you for installing {{ .Chart.Name }} version {{ .Chart.Version }}.
+
+Your application has been deployed with the following configuration:
+- Application Name: {{ .Values.app.name }}
+- Image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+- Replica Count: {{ .Values.replicaCount }}
+- Service Type: {{ .Values.service.type }}
+
+Resource allocation:
+- CPU Request: {{ .Values.resources.requests.cpu }}
+- Memory Request: {{ .Values.resources.requests.memory }}
+- CPU Limit: {{ .Values.resources.limits.cpu }}
+- Memory Limit: {{ .Values.resources.limits.memory }}
+
+To check the status of your deployment:
+  kubectl get deployment {{ .Values.app.name }}-deployment -n {{ .Release.Namespace }}
+
+To check the status of your service:
+  kubectl get service {{ .Values.app.name }}-service -n {{ .Release.Namespace }}
+
+To check the logs of your application:
+  kubectl logs -f deployment/{{ .Values.app.name }}-deployment -n {{ .Release.Namespace }}
+
+To access your application using port-forward:
+  kubectl port-forward service/{{ .Values.app.name }}-service 8090:{{ .Values.service.port }} -n {{ .Release.Namespace }}
