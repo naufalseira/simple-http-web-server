@@ -1,6 +1,6 @@
 # Simple HTTP Web Server
 
-A simple web application built with Go, using the Gorilla Mux framework to create an HTTP server. The application serves both static and dynamic endpoints and includes middleware for logging and HTTP method validation.
+A simple HTTP web server built with Go and the Gorilla Mux framework, designed to demonstrate core web server functionalities including static file serving, static routing, dynamic routing, form handling, and middleware for HTTP method validation and logging.
 
 ## Features
 
