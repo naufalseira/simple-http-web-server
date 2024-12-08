@@ -4,6 +4,11 @@ Your application has been deployed with the following configuration:
 - Application Name: {{ .Values.app.name }}
 - Image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
 - Service Type: {{ .Values.service.type }}
+- HorizontalPodAutoscaler: {{ .Values.autoscaling.enabled }}
+- Min Replicas: {{ .Values.autoscaling.minReplicas }}
+- Max Replicas: {{ .Values.autoscaling.maxReplicas }}
+- CPU Target Utilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}%
+- Memory Target Utilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}%
 
 Resource allocation:
 - CPU Request: {{ .Values.resources.requests.cpu }}
@@ -12,13 +17,13 @@ Resource allocation:
 - Memory Limit: {{ .Values.resources.limits.memory }}
 
 To check the status of your deployment:
-  kubectl get deployment {{ .Values.app.name }}-deployment -n {{ .Release.Namespace }}
+  kubectl get deployment {{ .Values.app.name }} -n {{ .Release.Namespace }}
 
 To check the status of your service:
-  kubectl get service {{ .Values.app.name }}-service -n {{ .Release.Namespace }}
+  kubectl get service {{ .Values.app.name }} -n {{ .Release.Namespace }}
 
 To check the logs of your application:
-  kubectl logs -f deployment/{{ .Values.app.name }}-deployment -n {{ .Release.Namespace }}
+  kubectl logs -f deployment/{{ .Values.app.name }} -n {{ .Release.Namespace }}
 
 To access your application using port-forward:
-  kubectl port-forward service/{{ .Values.app.name }}-service 8090:{{ .Values.service.port }} -n {{ .Release.Namespace }}
+  kubectl port-forward service/{{ .Values.app.name }} {{ .Values.service.port }}:{{ .Values.service.targetPort }} -n {{ .Release.Namespace }}
