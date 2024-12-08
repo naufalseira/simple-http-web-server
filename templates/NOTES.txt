@@ -3,7 +3,6 @@ Thank you for installing {{ .Chart.Name }} version {{ .Chart.Version }}.
 Your application has been deployed with the following configuration:
 - Application Name: {{ .Values.app.name }}
 - Image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-- Replica Count: {{ .Values.replicaCount }}
 - Service Type: {{ .Values.service.type }}
 
 Resource allocation:
