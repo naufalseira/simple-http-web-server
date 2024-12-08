@@ -2,7 +2,12 @@
 app:
   name: simple-http-web-server
 
-replicaCount: 3
+autoscaling:
+  enabled: "true"
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
 
 image:
   repository: 0xsera/simple-http-web-server
