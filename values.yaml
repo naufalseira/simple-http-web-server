@@ -30,11 +30,11 @@ service:
 
 resources:
   requests:
+    memory: 150Mi
+    cpu: 150m
+  limits:
     memory: 300Mi
     cpu: 300m
-  limits:
-    memory: 310Mi
-    cpu: 310m
 
 readinessProbe:
   path: /
